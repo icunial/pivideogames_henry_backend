@@ -1,0 +1,19 @@
+{
+  "name": "pivideogames_henry_backend",
+  "version": "1.0.0",
+  "description": "![HenryLogo](https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icunial/pivideogames_henry_backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/icunial/pivideogames_henry_backend/issues"
+  },
+  "homepage": "https://github.com/icunial/pivideogames_henry_backend#readme"
+}
