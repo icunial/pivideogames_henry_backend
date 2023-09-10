@@ -32,7 +32,27 @@ router.get("/:id", async(req:Request, res:Response, next: NextFunction) => {
 // Get all videogames
 router.get("/", async(req:Request, res: Response, next: NextFunction) => {
 
+    const name = req.query.name;
+
     try{
+
+        if(name){
+            const apiResults: {}[] = await findByNameApi(name);
+
+            if(!apiResults.length){
+                return res.status(400).json({
+                    statusCode:404,
+                    msg: `Videogame with name ${name} not found!`
+                })
+            }
+
+            return res.status(200).json({
+                statusCode:200,
+                data: apiResults
+            })
+
+        }
+
         const apiResults: {}[] = await getAllApi();
 
         res.status(200).json({
