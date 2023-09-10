@@ -40,7 +40,7 @@ export const getAllApi = async ():Promise<ResObj[]> => {
             })
         }
 
-        /* for(const r of results){
+        for(const r of results){
             const apiResults = await axios.get(`${API_URL}/${r.id}?key=${process.env.API_KEY}`);
             if(apiResults){
                const genres: string[] = []
@@ -49,7 +49,7 @@ export const getAllApi = async ():Promise<ResObj[]> => {
                }
                r.genre = genres
             }
-        } */
+        } 
 
         return results
     }catch(error: any){
@@ -187,8 +187,8 @@ export const orderVideogamesFromMoreToLess = async (): Promise<ResObj[]> => {
         const apiResults: ResObj[] = await getAllApi();
 
         return apiResults.sort((a: ResObj, b: ResObj) => {
-            if(a.rating > b.rating) return 1;
-            if(a.rating < b.rating) return -1;
+            if(a.rating < b.rating) return 1;
+            if(a.rating > b.rating) return -1;
             return 0;
         })
 
@@ -198,7 +198,19 @@ export const orderVideogamesFromMoreToLess = async (): Promise<ResObj[]> => {
 
 }
 
-/*// Get Videogames ordered from Less to More rating from API
+// Get Videogames ordered from Less to More rating from API
 export const orderVideogamesFromLessToMore = async (): Promise<ResObj[]> => {
-    
-} */
+    try{
+
+        const apiResults: ResObj[] = await getAllApi();
+
+        return apiResults.sort((a: ResObj, b: ResObj) => {
+            if(a.rating > b.rating) return 1;
+            if(a.rating < b.rating) return -1;
+            return 0;
+        })
+
+    }catch(error: any){
+        throw new Error("Error trying to order videogames from More to Less rating from API")
+    }
+} 
