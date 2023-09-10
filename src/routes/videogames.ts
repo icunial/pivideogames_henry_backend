@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 const router = express.Router()
 
-import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromZtoA} from "../controllers/videogames"
+import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess} from "../controllers/videogames"
 
 // Get videogame by its id
 router.get("/:id", async(req:Request, res:Response, next: NextFunction) => {
@@ -82,10 +82,10 @@ router.get("/filter/:opt", async (req: Request, res: Response, next:NextFunction
             case "za":
                 results = await orderVideogamesFromZtoA()
                 break;
-            /*case "more":
+            case "more":
                 results = await orderVideogamesFromMoreToLess()
                 break;
-            case "less":
+            /*case "less":
                 results = await orderVideogamesFromLessToMore()
                 break; */
             default:
