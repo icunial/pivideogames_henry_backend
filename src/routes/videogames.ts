@@ -3,6 +3,8 @@ const router = express.Router()
 
 import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore, videogamesFilteredByGenre} from "../controllers/videogames"
 
+import {validateName, validateDescription, validateRating, validateReleased} from "../utils/validations"
+
 // Get videogame by its id
 router.get("/:id", async(req:Request, res:Response, next: NextFunction) => {
     const id: string = req.params.id;
@@ -129,6 +131,42 @@ router.get("/genre/:genre", async(req:Request, res:Response, next:NextFunction) 
 
     }catch(error:any){
         return next(error);
+    }
+
+})
+
+// Create a new videogame
+router.post("/", async(req: Request, res: Response, next: NextFunction) => {
+
+    const {name, image, description, released, rating} = req.body;
+
+    // Validations -> body parameters
+    if(validateName(name)) {
+        return res.status(400).json({
+            statusCode:400,
+            msg: validateName(name)
+        })
+    }
+
+    if(validateDescription(description)){
+        return res.status(400).json({
+            statusCode:400,
+            msg: validateDescription(description)
+        })
+    }
+
+    if(validateRating(rating)){
+        return res.status(400).json({
+            statusCode: 400,
+            msg: validateRating(rating)
+        })
+    }
+
+    if(validateReleased(released)){
+        return res.status(400).json({
+            statusCode:400,
+            msg: validateReleased(released)
+        })
     }
 
 })
