@@ -2,10 +2,10 @@
   "name": "pivideogames_henry_backend",
   "version": "1.0.0",
   "description": "![HenryLogo](https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png)",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index"
+    "start": "node dist/index",
+    "dev": "nodemon dist/index.js"
   },
   "repository": {
     "type": "git",
