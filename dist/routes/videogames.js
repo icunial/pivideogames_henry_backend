@@ -14,10 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
+const videogames_1 = require("../controllers/videogames");
 // Get all videogames
 router.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const apiResults = yield videogamesController.getAllApi();
+        const apiResults = yield (0, videogames_1.getAllApi)();
         res.status(200).json({
             statusCode: 200,
             data: apiResults
@@ -27,3 +28,4 @@ router.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         return next(error);
     }
 }));
+exports.default = router;

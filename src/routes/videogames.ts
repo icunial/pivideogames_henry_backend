@@ -1,12 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 const router = express.Router()
 
+import {getAllApi} from "../controllers/videogames"
+
 // Get all videogames
 router.get("/", async(req:Request, res: Response, next: NextFunction) => {
 
     try{
-
-        const apiResults: {}[] = await videogamesController.getAllApi();
+        const apiResults: {}[] = await getAllApi();
 
         res.status(200).json({
             statusCode:200,
@@ -18,3 +19,5 @@ router.get("/", async(req:Request, res: Response, next: NextFunction) => {
     }
 
 })
+
+export default router
