@@ -6,7 +6,7 @@ type GenreItem = {
 }
 
 // Get genre by its name
-const getGenreByNameDb = async(name: string): Promise<GenreItem[]> => {
+export const getGenreByNameDb = async(name: string): Promise<GenreItem[]> => {
     const result: GenreItem[] = []
 
     try{
