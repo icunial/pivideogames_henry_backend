@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const PORT = process.env.PORT || 5000;
 const app = express_1.default.application = (0, express_1.default)();
+const index_1 = __importDefault(require("./routes/index"));
 // Body-Parser Middleware 
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
@@ -17,6 +18,8 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     next();
 });
+// Router Middleware
+app.use("/", index_1.default);
 // Error catching endware
 app.use((err, req, res, next) => {
     const status = err.status || 500;

@@ -2,6 +2,8 @@ import express, {Request, Response, NextFunction} from "express"
 const PORT: string | number = process.env.PORT || 5000;
 const app = express.application = express()
 
+import router from "./routes/index"
+
 // Body-Parser Middleware 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
@@ -17,6 +19,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     next();
   });
+
+// Router Middleware
+app.use("/", router)
 
 interface responseObject {
     statusCode: number,
