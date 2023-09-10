@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 const router = express.Router()
 
-import {getAllApi, findVideogameByIdApi} from "../controllers/videogames"
+import {getAllApi, findVideogameByIdApi, findByNameApi} from "../controllers/videogames"
 
 // Get videogame by its id
 router.get("/:id", async(req:Request, res:Response, next: NextFunction) => {
@@ -37,7 +37,7 @@ router.get("/", async(req:Request, res: Response, next: NextFunction) => {
     try{
 
         if(name){
-            const apiResults: {}[] = await findByNameApi(name);
+            const apiResults: {}[] = await findByNameApi(name.toString());
 
             if(!apiResults.length){
                 return res.status(400).json({
