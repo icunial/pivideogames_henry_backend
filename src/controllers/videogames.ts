@@ -127,3 +127,18 @@ export const findVideogameByIdApi = async(id: string): Promise<ResObjId[]> => {
     }
 
 }
+
+// Get videogames by their name from API
+export const findByNameApi = async (name: string): Promise<ResObj[]> => {
+    try{
+        console.log(name)
+        const apiResults: ResObj[] = await getAllApi();
+
+        return apiResults.filter((r: ResObj) => {
+            return r.name.toUpperCase().startsWith(name.toUpperCase())
+        })
+
+    }catch(error: any){
+        throw new Error("Error trying to get a videogame by its name")
+    }
+}
