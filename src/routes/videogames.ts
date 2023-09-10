@@ -5,6 +5,8 @@ import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ,
 
 import {validateName, validateDescription, validateRating, validateReleased} from "../utils/validations"
 
+import {getGenreByNameDb} from "../controllers/genres"
+
 import { Videogame } from "../models/Videogame";
 
 // Get videogame by its id
@@ -137,6 +139,11 @@ router.get("/genre/:genre", async(req:Request, res:Response, next:NextFunction) 
 
 })
 
+type GenreItem = {
+    id: string,
+    name: string
+}
+
 // Create a new videogame
 router.post("/", async(req: Request, res: Response, next: NextFunction) => {
 
@@ -171,7 +178,21 @@ router.post("/", async(req: Request, res: Response, next: NextFunction) => {
         })
     }
 
+    const genresIDs: string[] = []
+
     try{
+        
+        let genre:string;
+
+        for(genre of genres){
+
+            const genreFound: GenreItem[] = await getGenreByNameDb(genre)
+            
+            if(genreFound.length > 0){
+                genresIDs.push(genreFound[0].id)
+            }
+
+        }
 
         const videogameCreated = await Videogame.create({
             name,
@@ -179,7 +200,8 @@ router.post("/", async(req: Request, res: Response, next: NextFunction) => {
             description,
             rating,
             released,
-            platforms: platforms.map((p: string) => p.toUpperCase())
+            platforms: platforms.map((p: string) => p.toUpperCase()),
+            genre: genresIDs
         })
 
         if(videogameCreated){
