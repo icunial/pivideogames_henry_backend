@@ -17,6 +17,16 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     next();
 });
+// Error catching endware
+app.use((err, req, res, next) => {
+    const status = err.status || 500;
+    const message = err.message || err;
+    const response = {
+        statusCode: status,
+        msg: message
+    };
+    res.status(status).json(response);
+});
 // Initialized Express Server
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);

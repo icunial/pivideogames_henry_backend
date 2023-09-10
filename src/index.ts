@@ -18,6 +18,22 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
   });
 
+interface responseObject {
+    statusCode: number,
+    msg: string
+}
+
+// Error catching endware
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    const status: number = err.status || 500
+    const message: string = err.message || err
+    const response: responseObject = {
+        statusCode: status,
+        msg: message
+    }
+    res.status(status).json(response)
+})
+
 // Initialized Express Server
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`)
