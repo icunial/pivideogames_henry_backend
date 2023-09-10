@@ -5,6 +5,8 @@ import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ,
 
 import {validateName, validateDescription, validateRating, validateReleased} from "../utils/validations"
 
+import { Videogame } from "../models/Videogame";
+
 // Get videogame by its id
 router.get("/:id", async(req:Request, res:Response, next: NextFunction) => {
     const id: string = req.params.id;
@@ -138,7 +140,7 @@ router.get("/genre/:genre", async(req:Request, res:Response, next:NextFunction) 
 // Create a new videogame
 router.post("/", async(req: Request, res: Response, next: NextFunction) => {
 
-    const {name, image, description, released, rating} = req.body;
+    const {name, image, description, released, rating, platforms, genres} = req.body;
 
     // Validations -> body parameters
     if(validateName(name)) {
@@ -167,6 +169,29 @@ router.post("/", async(req: Request, res: Response, next: NextFunction) => {
             statusCode:400,
             msg: validateReleased(released)
         })
+    }
+
+    try{
+
+        const videogameCreated = await Videogame.create({
+            name,
+            image,
+            description,
+            rating,
+            released,
+            platforms: platforms.map((p: string) => p.toUpperCase())
+        })
+
+        if(videogameCreated){
+            return res.status(201).json({
+                statusCode:201,
+                data: videogameCreated
+            })
+        }
+
+    }catch(error:any){
+        console.log(error.message)
+        return next(new Error("Error trying to create a new Videogame"))
     }
 
 })
