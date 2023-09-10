@@ -14,6 +14,7 @@ type GenreItem = {
     name: String
 }
 
+// Get all genres from DB
 router.get("/", async(req: Request, res: Response, next: NextFunction) => {
 
     const results: GenreItem[] = [];
@@ -59,6 +60,45 @@ router.get("/", async(req: Request, res: Response, next: NextFunction) => {
     }catch(error: any){
         console.log(error.message)
         return next(new Error("Error trying to get all genres from DB"));
+    }
+
+})
+
+// Get genre by name
+router.get("/:name", async(req: Request, res: Response, next: NextFunction) => {
+
+    const name = req.params.name;
+
+    const result: GenreItem[] = []
+
+    try{
+
+        const dbResults = await Genre.find({
+            name: name.toUpperCase()
+        })
+
+        if(dbResults.length > 0){
+            result.push({
+                id: dbResults[0].id,
+                name: dbResults[0].name
+            })
+
+            return res.status(200).json({
+                statusCode:200,
+                data: result
+            })
+
+        }else{
+
+            return res.status(404).json({
+                statusCode:404,
+                msg: `Genre ${name} not found!`
+            })
+
+        }
+
+    }catch(error: any){
+        return next(error);
     }
 
 })
