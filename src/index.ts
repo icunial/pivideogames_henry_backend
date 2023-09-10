@@ -4,6 +4,18 @@ const app = express.application = express()
 
 import router from "./routes/index"
 
+import db from "./db";
+
+// Check DB connection
+db.once("open", () => {
+    console.log("Connected to MongoDB");
+})
+
+// Check for DB errors
+db.on("error", (error: any) => {
+    console.log(error);
+})
+
 // Body-Parser Middleware 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
