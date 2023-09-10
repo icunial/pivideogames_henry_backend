@@ -176,11 +176,11 @@ export const orderVideogamesFromZtoA = async (): Promise<ResObj[]> => {
         })
 
     }catch(error: any){
-        throw new Error("Error trying to order videogames from A to Z from API")
+        throw new Error("Error trying to order videogames from Z to A from API")
     }
 }
 
-/* // Get Videogames ordered from More to Less rating from API
+// Get Videogames ordered from More to Less rating from API
 export const orderVideogamesFromMoreToLess = async (): Promise<ResObj[]> => {
     try{
 
@@ -188,16 +188,17 @@ export const orderVideogamesFromMoreToLess = async (): Promise<ResObj[]> => {
 
         return apiResults.sort((a: ResObj, b: ResObj) => {
             if(a.rating > b.rating) return 1;
-            if(b.rating < b.rating) return -1;
+            if(a.rating < b.rating) return -1;
             return 0;
         })
 
     }catch(error: any){
-        throw new Error("Error trying to order videogames from A to Z from API")
+        throw new Error("Error trying to order videogames from More to Less rating from API")
     }
+
 }
 
-// Get Videogames ordered from Less to More rating from API
+/*// Get Videogames ordered from Less to More rating from API
 export const orderVideogamesFromLessToMore = async (): Promise<ResObj[]> => {
     
 } */
