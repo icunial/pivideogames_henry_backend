@@ -7,6 +7,8 @@ import axios from "axios";
 import dotenv from "dotenv"
 dotenv.config()
 
+import {getGenreByNameDb} from "../controllers/genres"
+
 const GENRES_URL = "https://api.rawg.io/api/genres";
 
 type GenreItem = {
@@ -69,30 +71,22 @@ router.get("/:name", async(req: Request, res: Response, next: NextFunction) => {
 
     const name = req.params.name;
 
-    const result: GenreItem[] = []
-
     try{
+   
+        const result: GenreItem[] = await getGenreByNameDb(name);
 
-        const dbResults = await Genre.find({
-            name: name.toUpperCase()
-        })
-
-        if(dbResults.length > 0){
-            result.push({
-                id: dbResults[0].id,
-                name: dbResults[0].name
-            })
-
-            return res.status(200).json({
-                statusCode:200,
-                data: result
-            })
-
-        }else{
+        if(!result.length){
 
             return res.status(404).json({
                 statusCode:404,
                 msg: `Genre ${name} not found!`
+            })
+
+        }else{
+
+            return res.status(200).json({
+                statusCode:200,
+                data: result
             })
 
         }
