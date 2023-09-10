@@ -106,4 +106,31 @@ router.get("/filter/:opt", async (req: Request, res: Response, next:NextFunction
  
 })
 
+// Get videogames filtered by genre
+router.get("/region/:region", async(req:Request, res:Response, next:NextFunction) => {
+
+    const region = req.params.region;
+
+    try{
+
+        const apiResults = videogamesFilteredByGenre(region)
+
+        if(!apiResults.length){
+            return res.status(404).json({
+                statusCode:404,
+                msg: `Region ${region} not found!`
+            })
+        }
+
+        res.status(200).json({
+            statusCode:200,
+            data: apiResults
+        })
+
+    }catch(error:any){
+        return next(error);
+    }
+
+})
+
 export default router
