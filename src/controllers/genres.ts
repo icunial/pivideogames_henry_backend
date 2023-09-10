@@ -1,8 +1,8 @@
 import {Genre} from "../models/Genre";
 
 type GenreItem = {
-    id: number,
-    name: String
+    id: string,
+    name: string
 }
 
 // Get genre by its name
