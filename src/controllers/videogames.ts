@@ -214,3 +214,18 @@ export const orderVideogamesFromLessToMore = async (): Promise<ResObj[]> => {
         throw new Error("Error trying to order videogames from More to Less rating from API")
     }
 } 
+
+// Get videogames filtered by genre
+export const videogamesFilteredByGenre = async(genre: string) : Promise<ResObj[]> => {
+
+    try{
+
+        const apiResults: ResObj[] = await getAllApi();
+
+        return apiResults.filter((r: ResObj) => r.genre?.includes(genre.toUpperCase()))
+
+    }catch(error: any){
+        throw new Error("Error trying to filter videogames by genre")
+    }
+
+}
