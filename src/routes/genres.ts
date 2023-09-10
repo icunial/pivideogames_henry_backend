@@ -12,8 +12,8 @@ import {getGenreByNameDb} from "../controllers/genres"
 const GENRES_URL = "https://api.rawg.io/api/genres";
 
 type GenreItem = {
-    id: number,
-    name: String
+    id: string,
+    name: string
 }
 
 // Get all genres from DB
