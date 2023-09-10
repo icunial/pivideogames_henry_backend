@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 const router = express.Router()
 
-import {getAllApi, findVideogameByIdApi, findByNameApi} from "../controllers/videogames"
+import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromMoreToLess} from "../controllers/videogames"
 
 // Get videogame by its id
 router.get("/:id", async(req:Request, res:Response, next: NextFunction) => {
@@ -64,6 +64,46 @@ router.get("/", async(req:Request, res: Response, next: NextFunction) => {
         return next(error)
     }
 
+})
+
+// Order features routes
+router.get("/filter/:opt", async (req: Request, res: Response, next:NextFunction) => {
+
+    const opt = req.params.opt;
+
+    try{
+
+        let results: {}[] = []
+
+        switch(opt){
+            case "az":
+                results = await orderVideogamesFromAtoZ()
+                break;
+            /* case "za":
+                results = await orderVideogamesFromZtoA()
+                break; */
+            case "more":
+                results = await orderVideogamesFromMoreToLess()
+                break;
+           /* case "less":
+                results = await orderVideogamesFromLessToMore()
+                break; */
+            default:
+                return res.status(400).json({
+                    statusCode: 400,
+                    msg: `Filter not available`
+                })
+        }
+
+        res.status(200).json({
+            statusCode:200,
+            data: results
+        })
+
+    }catch(error: any){
+        return next(error);
+    }
+ 
 })
 
 export default router
