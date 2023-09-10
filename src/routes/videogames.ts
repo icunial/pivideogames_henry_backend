@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 const router = express.Router()
 
-import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore} from "../controllers/videogames"
+import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore, videogamesFilteredByGenre} from "../controllers/videogames"
 
 // Get videogame by its id
 router.get("/:id", async(req:Request, res:Response, next: NextFunction) => {
@@ -107,18 +107,18 @@ router.get("/filter/:opt", async (req: Request, res: Response, next:NextFunction
 })
 
 // Get videogames filtered by genre
-router.get("/region/:region", async(req:Request, res:Response, next:NextFunction) => {
+router.get("/genre/:genre", async(req:Request, res:Response, next:NextFunction) => {
 
-    const region = req.params.region;
+    const genre = req.params.genre;
 
     try{
 
-        const apiResults = videogamesFilteredByGenre(region)
+        const apiResults: {}[] = await videogamesFilteredByGenre(genre)
 
         if(!apiResults.length){
             return res.status(404).json({
                 statusCode:404,
-                msg: `Region ${region} not found!`
+                msg: `Genre ${genre} not found!`
             })
         }
 
