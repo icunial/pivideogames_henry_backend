@@ -8,13 +8,15 @@ const API_URL: string = "https://api.rawg.io/api/games"
 type Data = {
     id: number,
     name: string, 
-    background_image: string
+    background_image: string,
+    rating: number
 }
 
 type ResObj = {
     id: number,
     name: string,
-    image: string
+    image: string,
+    rating: number,
     genre?: string[]
 }
 
@@ -32,12 +34,13 @@ export const getAllApi = async ():Promise<ResObj[]> => {
                 results.push({
                     id: r.id,
                     name: r.name,
-                    image: r.background_image
+                    image: r.background_image,
+                    rating: r.rating
                 })
             })
         }
 
-        for(const r of results){
+        /* for(const r of results){
             const apiResults = await axios.get(`${API_URL}/${r.id}?key=${process.env.API_KEY}`);
             if(apiResults){
                const genres: string[] = []
@@ -46,7 +49,7 @@ export const getAllApi = async ():Promise<ResObj[]> => {
                }
                r.genre = genres
             }
-        }
+        } */
 
         return results
     }catch(error: any){
@@ -142,3 +145,47 @@ export const findByNameApi = async (name: string): Promise<ResObj[]> => {
         throw new Error("Error trying to get a videogame by its name")
     }
 }
+
+// Get Videogames ordered from A to Z from API
+export const orderVideogamesFromAtoZ = async (): Promise<ResObj[]> => {
+    try{
+
+        const apiResults: ResObj[] = await getAllApi();
+
+        return apiResults.sort((a: ResObj, b: ResObj) => {
+            if(a.name > b.name) return 1;
+            if(b.name < b.name) return -1;
+            return 0;
+        })
+
+    }catch(error: any){
+        throw new Error("Error trying to order videogames from A to Z from API")
+    }
+}
+
+/* // Get Videogames ordered from Z to A from API
+export const orderVideogamesFromZtoA = async (): Promise<ResObj[]> => {
+    
+}*/
+
+// Get Videogames ordered from More to Less rating from API
+export const orderVideogamesFromMoreToLess = async (): Promise<ResObj[]> => {
+    try{
+
+        const apiResults: ResObj[] = await getAllApi();
+
+        return apiResults.sort((a: ResObj, b: ResObj) => {
+            if(a.rating > b.rating) return 1;
+            if(b.rating < b.rating) return -1;
+            return 0;
+        })
+
+    }catch(error: any){
+        throw new Error("Error trying to order videogames from A to Z from API")
+    }
+}
+
+/* // Get Videogames ordered from Less to More rating from API
+export const orderVideogamesFromLessToMore = async (): Promise<ResObj[]> => {
+    
+} */
