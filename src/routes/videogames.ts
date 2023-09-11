@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 const router = express.Router()
 
-import {getAllApi, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore, videogamesFilteredByGenre} from "../controllers/videogames"
+import {getAllApi, getAllDb, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore, videogamesFilteredByGenre} from "../controllers/videogames"
 
 import {validateName, validateDescription, validateRating, validateReleased} from "../utils/validations"
 
@@ -147,7 +147,19 @@ router.get("/from/:from", async(req:Request, res:Response, next: NextFunction) =
 
         if(from === "db"){
 
-            
+            const dbResults: {}[] = await getAllDb();
+
+            if(!dbResults.length){
+                return res.status(404).json({
+                    statusCode:404,
+                    msg: `No videogames saved in DB`
+                })
+            }
+
+            return res.status(200).json({
+                statusCode:200,
+                data: dbResults
+            })
 
         }else if(from === "api"){
 
