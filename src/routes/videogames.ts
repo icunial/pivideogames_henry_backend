@@ -60,10 +60,11 @@ router.get("/", async(req:Request, res: Response, next: NextFunction) => {
         }
 
         const apiResults: {}[] = await getAllApi();
+        const dbResults: {}[] = await getAllDb();
 
         res.status(200).json({
             statusCode:200,
-            data: apiResults
+            data: dbResults.concat(apiResults)
         })
 
     }catch(error: any){
