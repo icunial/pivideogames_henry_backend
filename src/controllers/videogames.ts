@@ -5,6 +5,8 @@ dotenv.config()
 
 const API_URL: string = "https://api.rawg.io/api/games"
 
+import { Videogame } from "../models/Videogame"
+
 type Data = {
     id: number,
     name: string, 
@@ -229,3 +231,33 @@ export const videogamesFilteredByGenre = async(genre: string) : Promise<ResObj[]
     }
 
 }
+
+// Get all videogames from DB
+export const getAllDb = async () : Promise<ResObj[]> => {
+
+    const results : ResObj[] = [];
+
+    try{
+
+        const dbResults = await Videogame.find();
+
+        if(dbResults){
+
+            dbResults.forEach((r) => {
+                results.push({
+                    id: r.id,
+                    name: r.name,
+                    image: r.image,
+                    rating: r.rating
+                })
+            })
+
+        }
+
+        return results;
+
+    }catch(error){
+        throw new Error("Error trying to get all videogames from DB")
+    }
+
+}   
