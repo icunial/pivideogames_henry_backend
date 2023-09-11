@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 const router = express.Router()
 
-import {getAllApi, getAllDb, findVideogameByIdApi, findByNameApi, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore, videogamesFilteredByGenre} from "../controllers/videogames"
+import {getAllApi, getAllDb, findVideogameByIdApi, findByNameApi, findByNameDb, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore, videogamesFilteredByGenre} from "../controllers/videogames"
 
 import {validateName, validateDescription, validateRating, validateReleased} from "../utils/validations"
 
@@ -44,17 +44,20 @@ router.get("/", async(req:Request, res: Response, next: NextFunction) => {
 
         if(name){
             const apiResults: {}[] = await findByNameApi(name.toString());
+            const dbResults: {}[] = await findByNameDb(name.toString());
 
-            if(!apiResults.length){
+            const results = dbResults.concat(apiResults)
+
+            if(!results.length){
                 return res.status(400).json({
                     statusCode:404,
                     msg: `Videogame with name ${name} not found!`
                 })
-            }
+            } 
 
             return res.status(200).json({
                 statusCode:200,
-                data: apiResults
+                data: results
             })
 
         }
