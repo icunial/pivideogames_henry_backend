@@ -130,7 +130,8 @@ export const findVideogameByIdApi = async(id: string): Promise<ResObjId[]> => {
 
         return result;
     }catch(error: any){
-        throw new Error("Error trying to get a videogame by its ID");
+        console.log(error.message)
+        throw new Error("Error trying to get a videogame by its ID from API");
     }
 
 }
