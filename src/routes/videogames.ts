@@ -139,6 +139,38 @@ router.get("/genre/:genre", async(req:Request, res:Response, next:NextFunction) 
 
 })
 
+// Get videogames from API or DB
+router.get("/from/:from", async(req:Request, res:Response, next: NextFunction) => {
+    const from = req.params.from;
+
+    try{
+
+        if(from === "db"){
+
+            
+
+        }else if(from === "api"){
+
+            const apiResults: {}[] = await getAllApi();
+
+            res.status(200).json({
+                statusCode:200,
+                data: apiResults
+            })
+
+        }else{
+            return res.status(400).json({
+                statusCode:400,
+                msg: `Param ${from} not available!`
+            })
+        }
+
+    }catch(error: any){
+        return next(error);
+    }
+
+})
+
 type GenreItem = {
     id: string,
     name: string
