@@ -138,7 +138,6 @@ export const findVideogameByIdApi = async(id: string): Promise<ResObjId[]> => {
 // Get videogames by their name from API
 export const findByNameApi = async (name: string): Promise<ResObj[]> => {
     try{
-        console.log(name)
         const apiResults: ResObj[] = await getAllApi();
 
         return apiResults.filter((r: ResObj) => {
@@ -322,6 +321,60 @@ export const findByNameDb = async (name:string) : Promise<ResObj[]> => {
                     image: r.image,
                     rating: r.rating,
                     genre: genres
+                })
+            }
+
+        }
+
+        return results;
+
+    }catch(error:any){
+        console.log(error.message)
+        throw new Error("Error trying to get all videogames by their names from DB")
+    }
+
+}   
+
+// Get videogame by its id from DB
+export const findVideogameByIdDb = async (id: string) : Promise<ResObjId[]> => {
+
+    const results : ResObjId[] = [];
+
+    try{
+
+        const dbResults = await Videogame.find({_id: id});
+
+        if(dbResults){
+
+           for(let r of dbResults){
+
+                const genres: string[] = [];
+
+                if(r.genre.length > 0){
+
+                    for(let genre of r.genre){
+
+                        const genreFound = await Genre.find({_id : genre});
+
+                        if(genreFound){
+
+                            genres.push(genreFound[0].name)
+
+                        }
+
+                    }
+
+                }
+
+                results.push({
+                    id: r.id,
+                    name: r.name,
+                    image: r.image,
+                    rating: r.rating,
+                    genres: genres,
+                    description: r.description,
+                    released: r.released,
+                    platforms: r.platforms
                 })
             }
 
