@@ -292,7 +292,7 @@ export const findByNameDb = async (name:string) : Promise<ResObj[]> => {
 
     try{
 
-        const dbResults = await Videogame.find({name});
+        const dbResults = await Videogame.find({name: new RegExp(name, "i")});
 
         if(dbResults){
 
