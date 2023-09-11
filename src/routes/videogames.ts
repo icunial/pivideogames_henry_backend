@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 const router = express.Router()
 
-import {getAllApi, getAllDb, findVideogameByIdApi, findByNameApi, findByNameDb, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore, videogamesFilteredByGenre} from "../controllers/videogames"
+import {getAllApi, getAllDb, findVideogameByIdApi, findVideogameByIdDb, findByNameApi, findByNameDb, orderVideogamesFromAtoZ, orderVideogamesFromZtoA, orderVideogamesFromMoreToLess, orderVideogamesFromLessToMore, videogamesFilteredByGenre} from "../controllers/videogames"
 
 import {validateName, validateDescription, validateRating, validateReleased} from "../utils/validations"
 
@@ -9,24 +9,53 @@ import {getGenreByNameDb} from "../controllers/genres"
 
 import { Videogame } from "../models/Videogame";
 
+import mongoose from "mongoose";
+
 // Get videogame by its id
 router.get("/:id", async(req:Request, res:Response, next: NextFunction) => {
     const id: string = req.params.id;
 
     try{
 
-        const apiResults: {}[] = await findVideogameByIdApi(id);
+        if(!Number(id) && id.length === 24){
 
-        if(!apiResults.length){
-            return res.status(404).json({
-                statusCode:404,
-                msg: `Videogame with ID: ${id} not found!`
+            const dbResults: {}[] = await findVideogameByIdDb(id);
+
+            if(!dbResults.length){
+                return res.status(404).json({
+                    statusCode:404,
+                    msg: `Videogame with ID: ${id} not found!`
+                })
+            }
+
+            return res.status(200).json({
+                statusCode:200,
+                data: dbResults
             })
+
         }
 
-        res.status(200).json({
-            statusCode:200,
-            data: apiResults
+        if(parseInt(id)){
+
+            const apiResults: {}[] = await findVideogameByIdApi(id);
+
+            if(!apiResults.length){
+                return res.status(404).json({
+                    statusCode:404,
+                    msg: `Videogame with ID: ${id} not found!`
+                })
+            }
+
+            return res.status(200).json({
+                statusCode:200,
+                data: apiResults
+            }) 
+
+        } 
+
+        return res.status(404).json({
+            statusCode:404,
+            msg: `Videogame with ID: ${id} not found!`
         })
 
     }catch(error: any){
