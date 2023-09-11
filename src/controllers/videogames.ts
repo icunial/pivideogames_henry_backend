@@ -284,3 +284,54 @@ export const getAllDb = async () : Promise<ResObj[]> => {
     }
 
 }   
+
+// Get videogames by their names from DB
+export const findByNameDb = async (name:string) : Promise<ResObj[]> => {
+
+    const results : ResObj[] = [];
+
+    try{
+
+        const dbResults = await Videogame.find({name});
+
+        if(dbResults){
+
+           for(let r of dbResults){
+
+                const genres: string[] = [];
+
+                if(r.genre.length > 0){
+
+                    for(let genre of r.genre){
+
+                        const genreFound = await Genre.find({_id : genre});
+
+                        if(genreFound){
+
+                            genres.push(genreFound[0].name)
+
+                        }
+
+                    }
+
+                }
+
+                results.push({
+                    id: r.id,
+                    name: r.name,
+                    image: r.image,
+                    rating: r.rating,
+                    genre: genres
+                })
+            }
+
+        }
+
+        return results;
+
+    }catch(error:any){
+        console.log(error.message)
+        throw new Error("Error trying to get all videogames by their names from DB")
+    }
+
+}   
